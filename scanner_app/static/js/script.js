@@ -7,14 +7,22 @@ const resultImg = document.getElementById('result-img');
 const detectionList = document.getElementById('detection-list');
 const sliderRange = document.getElementById('slider-range');
 const beforeContainer = document.getElementById('before-container');
-const pdfBtn = document.getElementById('pdf-btn');
+const totalCostEl = document.getElementById('total-cost');
+
+// Pricing Logic (INR)
+const COST_MAP = {
+    'scratch': 2000,
+    'dent': 5500,
+    'crack': 3500,
+    'glass_damage': 8500,
+    'lamp_damage': 4000,
+    'deformation': 15000
+};
 
 // Session State
 let sessionData = {
     totalScans: 0,
-    totalDamages: 0,
-    currentFilename: '',
-    currentDetections: []
+    totalDamages: 0
 };
 
 // Setup interactions
@@ -62,6 +70,7 @@ function handleUpload(file) {
     detectionList.innerHTML = '';
     sliderRange.value = 50;
     beforeContainer.style.width = '50%';
+    totalCostEl.innerText = '₹0';
     
     // Preview original
     const reader = new FileReader();
@@ -87,12 +96,19 @@ function handleUpload(file) {
             return;
         }
 
-        // Store state
+        // Store state & Calculate Costs
         sessionData.totalScans++;
         sessionData.totalDamages += data.detections.length;
-        sessionData.currentFilename = data.result_url.split('/').pop().replace('detected_', '');
-        sessionData.currentDetections = data.detections;
+        
+        let totalCost = 0;
+        data.detections.forEach(det => {
+            const cost = COST_MAP[det.class] || 2500; // Default if class unknown
+            totalCost += cost;
+        });
+
+        // Update UI
         updateStatsUI();
+        animateValue(totalCostEl, 0, totalCost, 1000);
 
         // Show result
         resultImg.src = data.result_url + '?t=' + new Date().getTime();
@@ -124,54 +140,19 @@ function updateStatsUI() {
     document.getElementById('total-damages').innerText = sessionData.totalDamages;
 }
 
-// PDF Generation
-pdfBtn.addEventListener('click', () => {
-    if (!sessionData.currentFilename) return;
-
-    pdfBtn.disabled = true;
-    const originalText = pdfBtn.innerHTML;
-    pdfBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
-
-    // Ensure we send a clean filename without query params
-    const cleanFilename = sessionData.currentFilename.split('?')[0];
-
-    fetch('/generate-pdf', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            filename: cleanFilename,
-            detections: sessionData.currentDetections
-        })
-    })
-    .then(async response => {
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Server error');
+function animateValue(obj, start, end, duration) {
+    let startTimestamp = null;
+    const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        const currentVal = Math.floor(progress * (end - start) + start);
+        obj.innerHTML = `₹${currentVal.toLocaleString('en-IN')}`;
+        if (progress < 1) {
+            window.requestAnimationFrame(step);
         }
-        return response.blob();
-    })
-    .then(blob => {
-        if (blob.type !== 'application/pdf') {
-            throw new Error('Received invalid file format');
-        }
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `Damage_Report_${cleanFilename.split('.')[0]}.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        
-        pdfBtn.disabled = false;
-        pdfBtn.innerHTML = originalText;
-    })
-    .catch(err => {
-        console.error(err);
-        alert('Failed to generate PDF: ' + err.message);
-        pdfBtn.disabled = false;
-        pdfBtn.innerHTML = originalText;
-    });
-});
+    };
+    window.requestAnimationFrame(step);
+}
 
 function resetApp() {
     resultsArea.classList.add('hidden');
