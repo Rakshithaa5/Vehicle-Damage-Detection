@@ -9,7 +9,16 @@ const sliderRange = document.getElementById('slider-range');
 const beforeContainer = document.getElementById('before-container');
 const totalCostEl = document.getElementById('total-cost');
 
-// Pricing Logic (INR)
+// Camera Elements
+const openCameraBtn = document.getElementById('open-camera-btn');
+const cameraModal = document.getElementById('camera-modal');
+const cameraPreview = document.getElementById('camera-preview');
+const captureBtn = document.getElementById('capture-btn');
+const closeCameraBtn = document.getElementById('close-camera-btn');
+const captureCanvas = document.getElementById('capture-canvas');
+
+// State
+let stream = null;
 const COST_MAP = {
     'scratch': 2000,
     'dent': 5500,
@@ -19,7 +28,6 @@ const COST_MAP = {
     'deformation': 15000
 };
 
-// Session State
 let sessionData = {
     totalScans: 0,
     totalDamages: 0
@@ -50,6 +58,48 @@ fileInput.addEventListener('change', (e) => {
         handleUpload(e.target.files[0]);
     }
 });
+
+// Camera Operations
+openCameraBtn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: 'environment' },
+            audio: false
+        });
+        cameraPreview.srcObject = stream;
+        cameraModal.classList.remove('hidden');
+    } catch (err) {
+        console.error(err);
+        alert('Could not access camera. Please check permissions.');
+    }
+});
+
+closeCameraBtn.addEventListener('click', () => {
+    stopCamera();
+    cameraModal.classList.add('hidden');
+});
+
+captureBtn.addEventListener('click', () => {
+    const context = captureCanvas.getContext('2d');
+    captureCanvas.width = cameraPreview.videoWidth;
+    captureCanvas.height = cameraPreview.videoHeight;
+    context.drawImage(cameraPreview, 0, 0, captureCanvas.width, captureCanvas.height);
+    
+    captureCanvas.toBlob((blob) => {
+        const file = new File([blob], "capture.jpg", { type: "image/jpeg" });
+        stopCamera();
+        cameraModal.classList.add('hidden');
+        handleUpload(file);
+    }, 'image/jpeg', 0.9);
+});
+
+function stopCamera() {
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
+    }
+}
 
 // Comparison Slider Logic
 sliderRange.addEventListener('input', (e) => {
@@ -102,7 +152,7 @@ function handleUpload(file) {
         
         let totalCost = 0;
         data.detections.forEach(det => {
-            const cost = COST_MAP[det.class] || 2500; // Default if class unknown
+            const cost = COST_MAP[det.class] || 2500;
             totalCost += cost;
         });
 

@@ -35,7 +35,30 @@
                     <h3>Upload Vehicle Image</h3>
                     <p>Drag and drop your image here or <span>browse files</span></p>
                     <input type="file" id="file-input" accept="image/*" hidden>
+                    
+                    <div class="upload-actions">
+                        <button class="btn btn-secondary" onclick="document.getElementById('file-input').click(); event.stopPropagation();">
+                            <i class="fa-solid fa-folder-open"></i> Browse
+                        </button>
+                        <button class="btn btn-primary" id="open-camera-btn">
+                            <i class="fa-solid fa-camera"></i> Open Camera
+                        </button>
+                    </div>
                 </div>
+            </div>
+
+            <!-- Camera Modal -->
+            <div class="camera-modal hidden" id="camera-modal">
+                <div class="camera-content">
+                    <video id="camera-preview" autoplay playsinline></video>
+                    <div class="camera-controls">
+                        <button class="btn-shutter" id="capture-btn"></button>
+                        <button class="btn-close" id="close-camera-btn">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+                <canvas id="capture-canvas" hidden></canvas>
             </div>
 
             <div class="results-container hidden" id="results-area">
