@@ -46,8 +46,8 @@ def predict():
     original_path = os.path.join(app.config['UPLOAD_FOLDER'], 'original_' + filename)
     file.save(original_path)
 
-    # Run inference
-    results = model.predict(source=original_path, conf=0.25, save=False)
+    # Run inference with a higher confidence threshold (0.50) to filter out noise
+    results = model.predict(source=original_path, conf=0.50, save=False)
     res = results[0]
     
     # Save annotated image
