@@ -129,34 +129,47 @@ pdfBtn.addEventListener('click', () => {
     if (!sessionData.currentFilename) return;
 
     pdfBtn.disabled = true;
+    const originalText = pdfBtn.innerHTML;
     pdfBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
+
+    // Ensure we send a clean filename without query params
+    const cleanFilename = sessionData.currentFilename.split('?')[0];
 
     fetch('/generate-pdf', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            filename: sessionData.currentFilename,
+            filename: cleanFilename,
             detections: sessionData.currentDetections
         })
     })
-    .then(response => response.blob())
+    .then(async response => {
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Server error');
+        }
+        return response.blob();
+    })
     .then(blob => {
+        if (blob.type !== 'application/pdf') {
+            throw new Error('Received invalid file format');
+        }
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `Damage_Report_${sessionData.currentFilename.split('.')[0]}.pdf`;
+        a.download = `Damage_Report_${cleanFilename.split('.')[0]}.pdf`;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
         
         pdfBtn.disabled = false;
-        pdfBtn.innerHTML = '<i class="fa-solid fa-file-pdf"></i> Download Report';
+        pdfBtn.innerHTML = originalText;
     })
     .catch(err => {
         console.error(err);
-        alert('Failed to generate PDF.');
+        alert('Failed to generate PDF: ' + err.message);
         pdfBtn.disabled = false;
-        pdfBtn.innerHTML = '<i class="fa-solid fa-file-pdf"></i> Download Report';
+        pdfBtn.innerHTML = originalText;
     });
 });
 
