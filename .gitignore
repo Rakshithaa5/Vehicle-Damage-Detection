@@ -17,7 +17,6 @@ runs/
 results/
 *.pt
 !scanner_app/models/best.pt
-!scanner_app/models/faster_rcnn.pt
 
 # Scanner App Uploads
 scanner_app/static/uploads/*

@@ -1,0 +1,12 @@
+path: C:\Users\raksh\dl\dataset
+train: images/train
+val:   images/val
+test:  images/test
+nc: 6
+names:
+  0: dent
+  1: scratch
+  2: crack
+  3: shattered_glass
+  4: bumper_damage
+  5: deformation
