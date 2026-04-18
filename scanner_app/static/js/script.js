@@ -54,6 +54,10 @@ function handleUpload(file) {
     // Prepare upload
     const formData = new FormData();
     formData.append('image', file);
+    
+    // Capture model choice
+    const selectedModel = document.querySelector('input[name="model-select"]:checked').value;
+    formData.append('model', selectedModel);
 
     fetch('/predict', {
         method: 'POST',

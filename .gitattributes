@@ -1,1 +1,2 @@
 scanner_app/models/best.pt filter=lfs diff=lfs merge=lfs -text
+scanner_app/models/*.pt filter=lfs diff=lfs merge=lfs -text

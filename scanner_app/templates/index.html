@@ -20,7 +20,17 @@
                 <i class="fa-solid fa-car-burst"></i>
                 <span>Detectra <span>AI</span></span>
             </div>
-            <p class="subtitle">Next-generation vehicle damage detection powered by YOLOv8</p>
+            <p class="subtitle">Next-generation vehicle damage detection powered by AI</p>
+            
+            <div class="model-switcher">
+                <div class="switcher-container">
+                    <input type="radio" id="model-yolo" name="model-select" value="yolo" checked>
+                    <label for="model-yolo">YOLOv8</label>
+                    <input type="radio" id="model-rcnn" name="model-select" value="rcnn">
+                    <label for="model-rcnn">Faster R-CNN</label>
+                    <div class="switcher-glider"></div>
+                </div>
+            </div>
         </header>
 
         <main>
@@ -68,7 +78,7 @@
         </main>
 
         <footer>
-            <p>&copy; 2026 Vehicle Damage Analytics. Powered by YOLOv8m.</p>
+            <p>&copy; 2026 Vehicle Damage Analytics. Multi-Model Inference Engine.</p>
         </footer>
     </div>
 
