@@ -27,5 +27,5 @@ ENV PORT=7860
 # Expose the port the app runs on (HF Spaces uses 7860)
 EXPOSE 7860
 
-# Run the application using gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:7860", "scanner_app.app:app"]
+# Run the application using gunicorn with a higher timeout for model loading
+CMD ["gunicorn", "--bind", "0.0.0.0:7860", "--timeout", "120", "scanner_app.app:app"]
