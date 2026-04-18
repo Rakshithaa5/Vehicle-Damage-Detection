@@ -9,14 +9,16 @@ pinned: true
 license: apache-2.0
 ---
 
-# 🏎️ Detectra AI: Vehicle Damage Scanner
-
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Hugging_Face-blue?style=for-the-badge&logo=huggingface)](https://huggingface.co/spaces/rakshithaa5/Vehicle_Damage_Detection)
-[![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![YOLOv8](https://img.shields.io/badge/Model-YOLOv8m-blueviolet?style=for-the-badge)](https://ultralytics.com/)
-[![INR](https://img.shields.io/badge/Currency-INR-green?style=for-the-badge)](https://en.wikipedia.org/wiki/Indian_rupee)
-
 **Detectra AI** is a professional-grade computer vision platform designed for automated vehicle inspection. It leverages high-precision **YOLOv8** object detection to identify damage and provides an instant **INR (₹) Repair Cost Estimate** for workshops and insurance agencies.
+
+---
+
+## 🏆 Model Selection & Performance
+
+During the development phase, we evaluated two primary architectures: **YOLOv8m** and **Faster R-CNN (ResNet-50 FPN)**.
+
+- **Faster R-CNN**: Provided high quality bounding boxes but was significantly slower (~2fps on CPU), making it less ideal for instant scanning.
+- **YOLOv8m (Final Choice)**: Emerged as the **best model** for this application. It achieved superior detection precision on the CarDD dataset while maintaining real-time inference speeds—essential for the **Instant Camera Capture** feature.
 
 ---
 
