@@ -1,3 +1,14 @@
+---
+title: Vehicle Damage Detection
+emoji: 🚗
+colorFrom: blue
+colorTo: red
+sdk: docker
+app_port: 7860
+pinned: false
+license: apache-2.0
+---
+
 # 🚗 Vehicle Damage Detection & Scanner
 
 [![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
