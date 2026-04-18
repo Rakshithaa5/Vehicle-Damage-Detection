@@ -76,20 +76,6 @@
                     </div>
                 </div>
             </div>
-
-            <section class="api-docs">
-                <h3><i class="fa-solid fa-code"></i> Developer API</h3>
-                <p>Integrate Detectra AI into your own workflow using our Python API.</p>
-                <div class="code-block">
-                    <pre><code>import requests
-
-def scan_damage(image_path):
-    url = "https://rakshithaa5-vehicle-damage-detection.hf.space/predict"
-    files = {'image': open(image_path, 'rb')}
-    response = requests.post(url, files=files)
-    return response.json()</code></pre>
-                </div>
-            </section>
         </main>
 
         <footer>
