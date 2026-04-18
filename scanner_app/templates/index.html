@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detectra | Vehicle Damage Assessment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="app-container">
+        <header>
+            <div class="logo">
+                <i class="fa-solid fa-car-burst"></i>
+                <span>Detectra <span>AI</span></span>
+            </div>
+            <p class="subtitle">Next-generation vehicle damage detection powered by YOLOv8</p>
+        </header>
+
+        <main>
+            <div class="upload-section" id="drop-zone">
+                <div class="upload-content">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <h3>Upload Vehicle Image</h3>
+                    <p>Drag and drop your image here or <span>browse files</span></p>
+                    <input type="file" id="file-input" accept="image/*" hidden>
+                </div>
+            </div>
+
+            <div class="results-container hidden" id="results-area">
+                <div class="comparison-grid">
+                    <div class="view-panel">
+                        <span class="label">Original</span>
+                        <div class="image-wrapper">
+                            <img id="original-img" src="" alt="Original">
+                        </div>
+                    </div>
+                    <div class="view-panel result-panel">
+                        <span class="label">Detections</span>
+                        <div class="image-wrapper">
+                            <img id="result-img" src="" alt="Detections">
+                            <div class="loading-overlay hidden" id="loading">
+                                <div class="spinner"></div>
+                                <span>Analyzing Damage...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detection-dashboard">
+                    <h3>Analysis Report</h3>
+                    <div class="detection-list" id="detection-list">
+                        <!-- Detections will be injected here -->
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-secondary" onclick="resetApp()">
+                            <i class="fa-solid fa-rotate-left"></i> New Scan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 Vehicle Damage Analytics. Powered by YOLOv8m.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
