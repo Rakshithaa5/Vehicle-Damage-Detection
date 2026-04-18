@@ -1,90 +1,39 @@
 ---
-title: Vehicle Damage Detection
+title: Detectra AI | Vehicle Damage Scanner
 emoji: 🚗
 colorFrom: blue
-colorTo: red
+colorTo: indigo
 sdk: docker
 app_port: 7860
-pinned: false
+pinned: true
 license: apache-2.0
 ---
 
-# 🚗 Vehicle Damage Detection & Scanner
+# 🏎️ Detectra AI: Vehicle Damage Scanner
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Hugging_Face-blue?style=for-the-badge&logo=huggingface)](https://huggingface.co/spaces/rakshithaa5/Vehicle_Damage_Detection)
 [![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org/)
-[![Ultralytics](https://img.shields.io/badge/YOLOv8-Ultralytics-blueviolet?style=for-the-badge)](https://ultralytics.com/)
-[![Flask](https://img.shields.io/badge/Flask-Web_App-lightgrey?style=for-the-badge&logo=flask&logoColor=black)](https://flask.palletsprojects.com/)
+[![YOLOv8](https://img.shields.io/badge/Model-YOLOv8m-blueviolet?style=for-the-badge)](https://ultralytics.com/)
+[![INR](https://img.shields.io/badge/Currency-INR-green?style=for-the-badge)](https://en.wikipedia.org/wiki/Indian_rupee)
 
-A comprehensive deep learning system for automated vehicle damage assessment. This project includes high-performance object detection models (YOLOv8, EfficientDet) trained on the **CarDD** dataset and a user-friendly web application for real-time damage scanning.
-
----
-
-## ✨ Features
-
-- 🏎️ **Dual Architecture Support**: Training scripts for both YOLOv8 (Ultralytics) and Faster R-CNN (Torchvision).
-- 🔍 **Deep Inspection**: Detects up to 6 types of damage: *Dent, Scratch, Crack, Shattered Glass, Bumper Damage, and Deformation*.
-- 🌐 **Web UI Interface**: Interactive "Scanner App" for uploading car photos and visualizing results instantly.
-- 📈 **Metric Tracking**: Automated CSV logging for mAP, precision, and recall across training experiments.
-- ⚙️ **Windows Optimized**: Built-in support for Windows-specific training constraints (VRAM management, worker handling).
+**Detectra AI** is a professional-grade computer vision platform designed for automated vehicle inspection. It leverages high-precision **YOLOv8** object detection to identify damage and provides an instant **INR (₹) Repair Cost Estimate** for workshops and insurance agencies.
 
 ---
 
-## 🛠️ Installation
+## ✨ Key Features
 
-### 1. Clone the Repository
-```bash
-git clone <your-repo-url>
-cd dl
-```
-
-### 2. Set Up Environment
-It is recommended to use a virtual environment:
-```bash
-python -m venv venv
-venv\Scripts\activate  # Windows
-```
-
-### 3. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
+- 💰 **INR Repair Cost Estimator**: Automated financial assessment based on Indian market standards for dents, scratches, and structural damage.
+- 📸 **Instant Camera Capture**: Mobile-optimized feature allowing users to photograph vehicles in real-time directly from their browser.
+- ↕️ **Interactive Comparison Slider**: Premium UI component to compare original car photos with AI detected layers side-by-side.
+- 📊 **Real-time Session Analytics**: Track scan counts and total damage findings during an inspection session.
+- 🎯 **Optimized Precision**: Tuned detection engine (Threshold: 0.50) to minimize false positives in complex environments.
 
 ---
 
-## 🚀 Usage
+## 🚀 Live Access
 
-### 📊 Model Training
-
-#### YOLOv8m (High Performance)
-To train the YOLOv8 model on the CarDD dataset:
-```bash
-python train_yolov8.py
-```
-*Weights and metrics will be saved to `runs/yolov8m/weights/`.*
-
-#### Faster R-CNN (ResNet-50 FPN)
-To train the Faster R-CNN architecture:
-```bash
-python train_rcnn_v2.py
-```
-*This script uses a ResNet-50 backbone with FPN, optimized for precise bounding box detection.*
-
----
-
-### 💻 Scanner Web Application
-
-The web application provides a visual interface for the trained models.
-
-1. **Start the server**:
-   ```bash
-   python scanner_app/app.py
-   ```
-2. **Access the application**:
-   Open your browser and navigate to `http://127.0.0.1:5000`.
-
-3. **Upload an Image**:
-   Upload a photo of a vehicle to see detected damages with confidence scores and bounding boxes.
+The project is hosted and ready for demonstration:
+👉 **[Detectra AI Live Demo](https://huggingface.co/spaces/rakshithaa5/Vehicle_Damage_Detection)**
 
 ---
 
@@ -92,33 +41,54 @@ The web application provides a visual interface for the trained models.
 
 ```text
 ├── scanner_app/           # Flask Web Application
-│   ├── app.py             # Main backend logic
-│   ├── static/            # CSS, JS, and uploaded images
-│   └── templates/         # HTML templates (index.html)
-├── dataset/               # Training data (Images & Labels)
-├── runs/                  # Training outputs (Weights, Logs, Plots)
-├── train_yolov8.py        # YOLOv8 Training Pipeline
-├── train_rcnn_v2.py       # Faster R-CNN Training Pipeline
-├── requirements.txt       # Project dependencies
-└── README.md              # Project documentation
+│   ├── app.py             # Backend API & Server logic
+│   ├── static/            # CSS (Glassmorphism), JS (Camera/Slider), Uploads
+│   └── templates/         # UI Architecture (index.html)
+├── models/                # Production Weights (best.pt)
+├── train_yolov8.py        # High-performance Training Pipeline
+├── requirements.txt       # Optimized Environment
+└── README.md              # Project Documentation
 ```
 
 ---
 
-## 📊 Dataset: CarDD
+## 🛠️ Local Installation
 
-This project uses the **CarDD Dataset**, a comprehensive dataset for car damage detection. The models are configured to detect:
-- **0**: Dent
-- **1**: Scratch
-- **2**: Crack
-- **3**: Shattered Glass
-- **4**: Bumper Damage
-- **5**: Deformation
+### 1. Clone & Setup
+```bash
+git clone https://github.com/Rakshithaa5/Vehicle-Damage-Detection
+cd dl
+python -m venv venv
+venv\Scripts\activate
+```
+
+### 2. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Run Locally
+```bash
+python scanner_app/app.py
+```
+*Navigate to `http://localhost:5000` to access the scanner.*
+
+---
+
+## 📊 Dataset & Categories (CarDD)
+
+The engine is trained on the comprehensive **CarDD** dataset, specialized in:
+- **Dent**: ₹4,000 - ₹7,000
+- **Scratch**: ₹1,500 - ₹3,000
+- **Crack**: ₹2,500 - ₹5,000
+- **Glass / Lamp Damage**: ₹4,000 - ₹12,000
+- **Deformation**: ₹10,000+
 
 ---
 
 ## 🛡️ License
-This project is for educational/research purposes in the field of Computer Vision and Vehicle Inspection.
+Distributed under the Apache-2.0 License. Built for Computer Vision research and professional portfolio demonstration.
 
-> [!TIP]
-> **GPU Optimization**: If you encounter Out-of-Memory (OOM) errors during training, try reducing the `batch` size in the training scripts. 
+---
+> [!IMPORTANT]
+> **Mobile Usage**: For the best experience with **Instant Camera Capture**, open the live link on a mobile device and grant camera permissions when prompted.
