@@ -5,6 +5,17 @@ const loading = document.getElementById('loading');
 const originalImg = document.getElementById('original-img');
 const resultImg = document.getElementById('result-img');
 const detectionList = document.getElementById('detection-list');
+const sliderRange = document.getElementById('slider-range');
+const beforeContainer = document.getElementById('before-container');
+const pdfBtn = document.getElementById('pdf-btn');
+
+// Session State
+let sessionData = {
+    totalScans: 0,
+    totalDamages: 0,
+    currentFilename: '',
+    currentDetections: []
+};
 
 // Setup interactions
 dropZone.addEventListener('click', () => fileInput.click());
@@ -32,6 +43,12 @@ fileInput.addEventListener('change', (e) => {
     }
 });
 
+// Comparison Slider Logic
+sliderRange.addEventListener('input', (e) => {
+    const value = e.target.value;
+    beforeContainer.style.width = value + '%';
+});
+
 function handleUpload(file) {
     if (!file.type.startsWith('image/')) {
         alert('Please upload an image file.');
@@ -43,6 +60,8 @@ function handleUpload(file) {
     resultsArea.classList.remove('hidden');
     loading.classList.remove('hidden');
     detectionList.innerHTML = '';
+    sliderRange.value = 50;
+    beforeContainer.style.width = '50%';
     
     // Preview original
     const reader = new FileReader();
@@ -68,8 +87,15 @@ function handleUpload(file) {
             return;
         }
 
+        // Store state
+        sessionData.totalScans++;
+        sessionData.totalDamages += data.detections.length;
+        sessionData.currentFilename = data.result_url.split('/').pop().replace('detected_', '');
+        sessionData.currentDetections = data.detections;
+        updateStatsUI();
+
         // Show result
-        resultImg.src = data.result_url + '?t=' + new Date().getTime(); // Prevent caching
+        resultImg.src = data.result_url + '?t=' + new Date().getTime();
         
         // Show detections
         if (data.detections.length === 0) {
@@ -79,8 +105,8 @@ function handleUpload(file) {
                 const item = document.createElement('div');
                 item.className = 'detection-item';
                 item.innerHTML = `
-                    <span class="det-name">${det.class.replace('_', ' ')}</span>
-                    <span class="det-conf">Confidence: ${det.confidence}%</span>
+                    <span class="det-name">${det.class.replace('_', ' ').toUpperCase()}</span>
+                    <span class="det-conf">${det.confidence}% Confidence</span>
                 `;
                 detectionList.appendChild(item);
             });
@@ -92,6 +118,47 @@ function handleUpload(file) {
         resetApp();
     });
 }
+
+function updateStatsUI() {
+    document.getElementById('total-scans').innerText = sessionData.totalScans;
+    document.getElementById('total-damages').innerText = sessionData.totalDamages;
+}
+
+// PDF Generation
+pdfBtn.addEventListener('click', () => {
+    if (!sessionData.currentFilename) return;
+
+    pdfBtn.disabled = true;
+    pdfBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
+
+    fetch('/generate-pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            filename: sessionData.currentFilename,
+            detections: sessionData.currentDetections
+        })
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Damage_Report_${sessionData.currentFilename.split('.')[0]}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        
+        pdfBtn.disabled = false;
+        pdfBtn.innerHTML = '<i class="fa-solid fa-file-pdf"></i> Download Report';
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Failed to generate PDF.');
+        pdfBtn.disabled = false;
+        pdfBtn.innerHTML = '<i class="fa-solid fa-file-pdf"></i> Download Report';
+    });
+});
 
 function resetApp() {
     resultsArea.classList.add('hidden');

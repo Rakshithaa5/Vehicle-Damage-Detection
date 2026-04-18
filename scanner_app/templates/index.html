@@ -21,6 +21,11 @@
                 <span>Detectra <span>AI</span></span>
             </div>
             <p class="subtitle">Next-generation vehicle damage detection powered by YOLOv8</p>
+            
+            <div class="session-stats" id="session-stats">
+                <div class="stat-item"><span id="total-scans">0</span> Scans</div>
+                <div class="stat-item"><span id="total-damages">0</span> Damages</div>
+            </div>
         </header>
 
         <main>
@@ -34,27 +39,29 @@
             </div>
 
             <div class="results-container hidden" id="results-area">
-                <div class="comparison-grid">
-                    <div class="view-panel">
-                        <span class="label">Original</span>
-                        <div class="image-wrapper">
-                            <img id="original-img" src="" alt="Original">
+                <div class="slider-wrapper">
+                    <span class="label top-label">Slide to compare: Original vs Detections</span>
+                    <div class="comparison-slider" id="comparison-slider">
+                        <img id="result-img" src="" alt="Detections" class="after-img">
+                        <div class="before-img-container" id="before-container">
+                            <img id="original-img" src="" alt="Original" class="before-img">
                         </div>
-                    </div>
-                    <div class="view-panel result-panel">
-                        <span class="label">Detections</span>
-                        <div class="image-wrapper">
-                            <img id="result-img" src="" alt="Detections">
-                            <div class="loading-overlay hidden" id="loading">
-                                <div class="spinner"></div>
-                                <span>Analyzing Damage...</span>
-                            </div>
+                        <input type="range" min="0" max="100" value="50" class="slider-handle" id="slider-range">
+                        
+                        <div class="loading-overlay hidden" id="loading">
+                            <div class="spinner"></div>
+                            <span>Analyzing Damage...</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="detection-dashboard">
-                    <h3>Analysis Report</h3>
+                    <div class="dashboard-header">
+                        <h3>Analysis Report</h3>
+                        <button class="btn btn-primary" id="pdf-btn">
+                            <i class="fa-solid fa-file-pdf"></i> Download Report
+                        </button>
+                    </div>
                     <div class="detection-list" id="detection-list">
                         <!-- Detections will be injected here -->
                     </div>
@@ -65,10 +72,24 @@
                     </div>
                 </div>
             </div>
+
+            <section class="api-docs">
+                <h3><i class="fa-solid fa-code"></i> Developer API</h3>
+                <p>Integrate Detectra AI into your own workflow using our Python API.</p>
+                <div class="code-block">
+                    <pre><code>import requests
+
+def scan_damage(image_path):
+    url = "https://rakshithaa5-vehicle-damage-detection.hf.space/predict"
+    files = {'image': open(image_path, 'rb')}
+    response = requests.post(url, files=files)
+    return response.json()</code></pre>
+                </div>
+            </section>
         </main>
 
         <footer>
-            <p>&copy; 2026 Vehicle Damage Analytics. Powered by YOLOv8m.</p>
+            <p>&copy; 2026 Vehicle Damage Analytics. Specialized Computer Vision Engine.</p>
         </footer>
     </div>
 
