@@ -1,13 +1,6 @@
----
-title: Detectra AI | Vehicle Damage Scanner
-emoji: 🚗
-colorFrom: blue
-colorTo: indigo
-sdk: docker
-app_port: 7860
-pinned: true
-license: apache-2.0
----
+
+ Detectra AI | Vehicle Damage Detection
+
 
 **Detectra AI** is a professional-grade computer vision platform designed for automated vehicle inspection. It leverages high-precision **YOLOv8** object detection to identify damage and provides an instant **INR (₹) Repair Cost Estimate** for workshops and insurance agencies.
 
