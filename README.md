@@ -81,8 +81,7 @@ The engine is trained on the comprehensive **CarDD** dataset, specialized in:
 
 ---
 
-## 🛡️ License
-Distributed under the Apache-2.0 License. Built for Computer Vision research and professional portfolio demonstration.
+
 
 ---
 > [!IMPORTANT]
